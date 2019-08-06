@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<!--[if lte IE 8 ]>
+<html class="ie" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+<![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<!--
+***************  *      *     *
+      8          *    *       *
+      8          *  *         *
+      8          **           *
+      8          *  *         *
+      8          *    *       *
+      8          *      *     *
+      8          *        *   ***********    -----Theme By Kieran(http://go.kieran.top)
+-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-CN" lang="zh-CN">
+<!--<![endif]-->
+
+<head>
+  <title>JVM体系结构 | Maowenz&#39;s Blog</title>
+  <!-- Meta data -->
+    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content="Maowenz's Blog">
+    <meta name="author" content="maowenz">
+    <meta name="description" content="生活就是一场磨练。" />
+    <meta name="keywords" content="" />
+
+    <!-- Favicon, (keep icon in root folder) -->
+    <link rel="Shortcut Icon" href="/img/favicon.ico" type="image/ico">
+
+    <link rel="alternate" href="/atom.xml" title="Maowenz&#39;s Blog" type="application/atom+xml">
+    <link rel="stylesheet" href="/css/all.css" media="screen" type="text/css">
+    
+    <link rel="stylesheet" href="/highlightjs/vs.css" type="text/css">
+    
+
+    <!--[if IE 8]>
+    <link rel="stylesheet" type="text/css" href="/css/ie8.css" />
+    <![endif]-->
+
+    <!-- jQuery | Load our jQuery, with an alternative source fallback to a local version if request is unavailable -->
+    <script src="/js/jquery-1.11.1.min.js"></script>
+    <script>window.jQuery || document.write('<script src="js/jquery-1.11.1.min.js"><\/script>')</script>
+
+    <!-- Load these in the <head> for quicker IE8+ load times -->
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="/js/html5shiv.min.js"></script>
+    <script src="/js/respond.min.js"></script>
+    <![endif]-->
+
+  
+  
+  
+
+  <style>.col-md-8.col-md-offset-2.opening-statement img{display:none;}</style>
+</head>
+
+<!--
+<body class="post-template">
+-->
+<body id="index" class="lightnav animsition">
+
+      <!-- ============================ Off-canvas navigation =========================== -->
+
+    <div class="sb-slidebar sb-right sb-style-overlay sb-momentum-scrolling">
+        <div class="sb-close" aria-label="Close Menu" aria-hidden="true">
+            <img src="/img/close.png" alt="Close"/>
+        </div>
+        <!-- Lists in Slidebars -->
+        <ul class="sb-menu">
+            <li><a href="/" class="animsition-link" title="Home">Home</a></li>
+            <li><a href="/archives" class="animsition-link" title="archive">archives</a></li>
+            <!-- Dropdown Menu -->
+			 
+            <li>
+                <a class="sb-toggle-submenu">Works<span class="sb-caret"></span></a>
+                <ul class="sb-submenu">
+                    
+                        <li><a href="/" target="_BLANK" class="animsition-link">AAA</a></li>
+                    
+                        <li><a href="/atom.xml" target="_BLANK" class="animsition-link">BBB</a></li>
+                    
+                </ul>
+            </li>
+            
+            
+            
+            <li>
+                <a class="sb-toggle-submenu">Links<span class="sb-caret"></span></a>
+                <ul class="sb-submenu">
+                    
+                    <li><a href="http://go.kieran.top/" class="animsition-link">Kieran</a></li>
+                    
+                    <li><a href="http://domain.com/" class="animsition-link">Name</a></li>
+                    
+                </ul>
+            </li>
+            
+        </ul>
+        <!-- Lists in Slidebars -->
+        <ul class="sb-menu secondary">
+            
+            <li><a href="/about.html" class="animsition-link" title="about">About</a></li>
+            <li><a href="/atom.xml" class="animsition-link" title="rss">RSS</a></li>
+        </ul>
+    </div>
+    
+    <!-- ============================ END Off-canvas navigation =========================== -->
+
+    <!-- ============================ #sb-site Main Page Wrapper =========================== -->
+
+    <div id="sb-site">
+        <!-- #sb-site - All page content should be contained within this id, except the off-canvas navigation itself -->
+
+        <!-- ============================ Header & Logo bar =========================== -->
+
+        <div id="navigation" class="navbar navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container">
+                    <!-- Nav logo -->
+                    <div class="logo">
+                        <a href="/" title="Logo" class="animsition-link">
+                         <img src="/img/logo.png" alt="Logo" width="35px;"/> 
+                        </a>
+                    </div>
+                    <!-- // Nav logo -->
+                    <!-- Info-bar -->
+                    <nav>
+                        <ul class="nav">
+                            <li><a href="/" class="animsition-link">Maowenz's Blog</a></li>
+                            <li class="nolink"><span>Always </span>Creative.</li>
+                            
+                            <li><a href="https://github.com/maowenz" title="Github" target="_blank"><i class="icon-github"></i></a></li>
+                            
+                            
+                            <li><a href="https://twitter.com/" title="Twitter" target="_blank"><i class="icon-twitter"></i></a></li>
+                            
+                            
+                            <li><a href="https://www.facebook.com/" title="Facebook" target="_blank"><i class="icon-facebook"></i></a></li>
+                            
+                            
+                            <li><a href="https://google.com/" title="Google-Plus" target="_blank"><i class="icon-google-plus"></i></a></li>
+                            
+                            
+                            <li><a href="http://weibo.com/p/1005055586360611/home?from=page_100505&mod=TAB&is_all=1#place" title="Sina-Weibo" target="_blank"><i class="icon-sina-weibo"></i></a></li>
+                            
+                            <li class="nolink"><span>Welcome!</span></li>
+                        </ul>
+                    </nav>
+                    <!--// Info-bar -->
+                </div>
+                <!-- // .container -->
+                <div class="learnmore sb-toggle-right">More</div>
+                <button type="button" class="navbar-toggle menu-icon sb-toggle-right" title="More">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar before"></span>
+                <span class="icon-bar main"></span>
+                <span class="icon-bar after"></span>
+                </button>
+            </div>
+            <!-- // .navbar-inner -->
+        </div>
+
+        <!-- ============================ Header & Logo bar =========================== -->
+
+
+      
+<section id="intro">
+    <div class="container">
+        <div class="row col-md-offset-2">
+            <div class="col-md-8">
+    			<span class="post-meta">
+      <time datetime="2019-07-29T06:58:45.000Z" itemprop="datePublished">
+          2019-07-29
+      </time>
+    
+</span>
+                <h1>JVM体系结构</h1>
+            </div>
+        </div>
+        <div class="col-md-8 col-md-offset-2">
+      		<h1 id="JVM体系结构与工作方式"><a href="#JVM体系结构与工作方式" class="headerlink" title="JVM体系结构与工作方式"></a>JVM体系结构与工作方式</h1><h2 id="JVM体系结构"><a href="#JVM体系结构" class="headerlink" title="JVM体系结构"></a>JVM体系结构</h2><p>一、什么是JVM<br>JVM是通过模拟一个计算机来达到一个计算机所具有的的计算功能</p>
+<p>以计算为中心来看计算机的体系结构可以分为以下几个部分：<br>1.指令集，计算机所能识别的机器语言的命令集合。<br>2.计算单元，既能够识别并且控制指令执行的功能模块。<br>3.寻址方式,地址的位数，最小地址和最大地址范围，以及地址的运行规则。<br>4.寄存器定义，包括操作数寄存器，变址寄存器和操作寄存器等的定义、数量和使用方式。<br>5.存储单元，能够存储操作数和保存操作结构的单元，如内核级缓存、内存和磁盘等。</p>
+<p>汇编语言是为了让人能够更容易地记住机器指令而使用的助记符</p>
+<p>JVM和实体机的区别：<br>1.一个抽象规范，这个规范约束了JVM到底是什么，它有哪些组成部分，这些抽象规范在The Java Virtual Machine Specification 中有详细描述（注：之后有机会可以读一下这本书）。<br>2.一个具体的实现，具体实现是指不同厂商根据这个抽象规范用软件或软硬件结合的方式在相同或者不同的的平台上的具体的实现。<br>3.一个运行中的实例，当使用JVM运行一个Java程序时，它就是一个运行中的实例，每个运行中的Java程序都是一个JVM实例。</p>
+<p>JVM和实体机一样也必须有一套合适的指令集，这个指令集能够被JVM解析执行。这个指令集我们称为JVM字节码指令集，符合class文件的字节码都可以被JVM执行。</p>
+<p>二、JVM体系结构详解<br>JVM组成部分：<br>1.指令集<br>2.类加载器，在程序启动或运行时将需要的class加载到JVM中。<br>3.执行引擎，负责执行class中包含的字节码指令，相当于实际机器的CPU。<br>4.内存区，将内存划分为若干个区以模拟实际机器上的存储，记录和调度功能模块。如实际机器上的各种功能的寄存器或者PC指针记录器等。<br>5.本地方法调用，调用C或者C++实现的本地方法的代码返回结果。</p>
+<h2 id="JVM的执行引擎是如何工作"><a href="#JVM的执行引擎是如何工作" class="headerlink" title="JVM的执行引擎是如何工作"></a>JVM的执行引擎是如何工作</h2><p>通常一个程序的编写到执行会经过以下的几个阶段：<br>源代码(source code)-&gt;预处理器(preprocesser)-&gt;编译器(compiler)-&gt;汇编程序(assembler)-&gt;目标代码(object code)-&gt;链接器(Linker)-&gt;可执行程序(executables)<br>除了源码和最后的可执行程序，中间的所有环节都是由现代意义上的编译器统一完成的。</p>
+<p>不管是何种指令集，都只有几种最基本的元素：加、减、乘、除、求余，求模等。这些运算又可以进一步分解成二进制运算符：与、或、异或等。这些运算又通过指令来完成，而指令的核心目的就是确定需要运算的种类（操作码）和需要运算的数据（操作数），以及从哪里（寄存器或栈）获取操作数，将运算结果存放到什么地方（寄存区或栈）等。这种不同的操作方式又将指令划分为：一地址指令、二地址指令、三地址指令和零地址指令等n地址指令。响应的指令集会有对应的架构实现，如基于寄存器的架构实现或者基于栈的架构实现（这里的基于寄存器或栈都是在一个指令中的操作数是如何存取的）</p>
+<p>JVM为何选择基于栈的架构？<br>JVM执行字节码指令是基于栈的架构，也就是所有的操作数必须先入栈，然后根据指令中的操作码选择从栈顶弹出若干元素进行计算后再将结果压入栈中。在JVM中操作数可以存放在每一个栈桢中的一个本地变量集中，即在每个方法调用时会给这个方法分配一个本地变量集，这个本地变量集在编译时就已经确定，所以操作数入栈可以直接是常量入栈或者从本地变量集中取一个变量压入栈中。这和一般的基于寄存器的操作不同，一个操作需要频繁的入栈出栈。如两个数相加，先将两个操作数从本地变量入栈（2次入栈），然后出栈进行进行加法运算（2次出栈），再将结果压入栈顶（1次入栈），共需要5次栈操作。而寄存器的话，一般只需要将两个操作数存入寄存器进行加法运算后将结果存入其中一个寄存器即可，不需要这么多数据移动操作。那为什么JVM还要基于栈来设计呢？</p>
+<p>JVM基于栈设计有如下几个理由：<br>1.JVM要设计成与平台无关，而平台无关性就是要保证在没有或有很少寄存器的机器上也能正确执行java代码。如在80x86的机器上寄存器就是没有规律的，很难针对某一款机器设计通用的基于寄存器的指令，所以基于寄存器的架构很难做到通用。<br>2.为了指令的紧凑型，因为java字节码可能在网络上传输，所以class文件的大小也是设计JVM字节码指令的一个重要因素，如在class文件中字节码除了处理两个表跳转的指令外，其他都是字节对齐的，操作码可以只占一个字节大小，这都是为了让编译后的字节码更加紧凑。为了提高字节码在网络上的传输效率，在编译阶段，JVM可以将多个class文件中重复的常量池信息进行合并，这样多个class文件中的常量就可以共用，从而起到减少数据量的作用。</p>
+<p>执行引擎的架构设计：<br>了解了JVM以栈为架构的原因后，再看一下JVM是如何设计Java的执行部件的。<br>每当创建一个新的线程时，JVM会为这个线程创建一个java栈，同时为这个线程分配一个pc寄存器，并且这个pc寄存器会指向这个线程的第一行可执行代码。每当调用一个新方法时会在这个栈上创建一个新的栈桢数据结构，这个栈桢会保留这个方法的一些数据元信息，如在这个方法中定义的局部变量，一些用来支持常量池的解析，正常方法返回及异常处理机制等。</p>
+<p>JVM在调用某些指令时可能需要使用到常量池中的一些常量，或者是获取常量代表的数据或者这个数据指向实例化对象。而这些信息都存储在所有线程共享的方法区和java堆中。</p>
+<h2 id="基本的JVM结构和工作模式"><a href="#基本的JVM结构和工作模式" class="headerlink" title="基本的JVM结构和工作模式"></a>基本的JVM结构和工作模式</h2>
+            <div class="clearfix"></div>
+            <hr class="nogutter">
+        </div>
+        <nav class="m-pagination col-md-8 col-md-offset-2 col-sm-24" role="pagination">
+    
+    
+</nav>
+
+        <div class="col-md-8 col-md-offset-2 col-sm-24"><script type="text/javascript">
+  /**
+   * 搜狐畅言
+   */
+
+  /*
+  document.write('<div id="SOHUCS" sid="' + window.location.pathname.slice(1) + '" ></div>');
+
+  window.onload = function () {
+    (function () {
+      var appid = 'cytXXXX';
+      var conf = 'prod_xxxxxxxxxxxxxxxxx';
+      var width = window.innerWidth || document.documentElement.clientWidth;
+      var loadJs = function (d, a, id) {
+        var c = document.getElementsByTagName("head")[0] || document.head || document.documentElement;
+        var b = document.createElement("script");
+        b.setAttribute("type", "text/javascript");
+        b.setAttribute("charset", "UTF-8");
+        b.setAttribute("src", d);
+        if (id) {
+          b.setAttribute("id", id);
+        }
+        if (typeof a === "function") {
+          if (window.attachEvent) {
+            b.onreadystatechange = function () {
+              var e = b.readyState;
+              if (e === "loaded" || e === "complete") {
+                b.onreadystatechange = null;
+                a()
+              }
+            }
+          } else {
+            b.onload = a
+          }
+        }
+        c.appendChild(b)
+      };
+
+      loadJs("https://changyan.sohu.com/upload/changyan.js", function () {
+        window.changyan.api.config({
+          appid: appid,
+          conf: conf
+        })
+      });
+    })();
+  }
+  */
+
+</script>
+</div>
+    </div>
+</section>
+
+
+      
+<!-- ============================ Footer =========================== -->
+
+<footer>
+    <div class="container">
+            <div class="copy">
+                <p>
+                    &copy; 2014<script>new Date().getFullYear()>2010&&document.write("-"+new Date().getFullYear());</script>, Content By maowenz. All Rights Reserved.
+                </p>
+                <p>Theme By <a href="//go.kieran.top" style="color: #767D84">Kieran</a></p>
+            </div>
+            <div class="social">
+                <ul>
+                    
+                    <li><a href="https://github.com/maowenz" title="Github" target="_blank"><i class="icon-github"></i></a>&nbsp;</li>
+                    
+                    
+                    <li><a href="https://twitter.com/" title="Twitter" target="_blank"><i class="icon-twitter"></i></a>&nbsp;</li>
+                    
+                    
+                    <li><a href="https://www.facebook.com/" title="Facebook" target="_blank"><i class="icon-facebook"></i></a>&nbsp;</li>
+                    
+                    
+                    <li><a href="https://google.com/" title="Google-Plus" target="_blank"><i class="icon-google-plus"></i></a>&nbsp;</li>
+                    
+                    
+                    <li><a href="http://weibo.com/p/1005055586360611/home?from=page_100505&mod=TAB&is_all=1#place" title="Sina-Weibo" target="_blank"><i class="icon-sina-weibo"></i></a>&nbsp;</li>
+                    
+                </ul>
+            </div>
+            <div class="clearfix"> </div>
+        </div>
+</footer>
+
+<!-- ============================ END Footer =========================== -->
+      <!-- Load our scripts -->
+<!-- Resizable 'on-demand' full-height hero -->
+<script type="text/javascript">
+    var resizeHero = function () {
+        var hero = $(".cover,.heightblock"),
+            window1 = $(window);
+        hero.css({
+            "height": window1.height()
+        });
+    };
+
+    resizeHero();
+
+    $(window).resize(function () {
+        resizeHero();
+    });
+</script>
+<script src="/js/plugins.min.js"></script><!-- Bootstrap core and concatenated plugins always load here -->
+<script src="/js/scripts.js"></script><!-- Theme scripts -->
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$('#intro').find('img').each(function(){
+  var alt = this.alt;
+
+  if (alt){
+    $(this).after('<span class="caption" style="display:none">' + alt + '</span>');
+  }
+
+  $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox" rel="gallery" />');
+});
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+      
+</body>
+</html>
