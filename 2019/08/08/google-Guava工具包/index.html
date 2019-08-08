@@ -17,7 +17,7 @@
 <!--<![endif]-->
 
 <head>
-  <title>JVM体系结构 | Maowenz&#39;s Blog</title>
+  <title>google Guava工具包 | Maowenz&#39;s Blog</title>
   <!-- Meta data -->
     <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -162,42 +162,40 @@
         <div class="row col-md-offset-2">
             <div class="col-md-8">
     			<span class="post-meta">
-      <time datetime="2019-07-29T06:58:45.000Z" itemprop="datePublished">
-          2019-07-29
+      <time datetime="2019-08-08T02:51:29.000Z" itemprop="datePublished">
+          2019-08-08
       </time>
     
 </span>
-                <h1>JVM体系结构</h1>
+                <h1>google Guava工具包</h1>
             </div>
         </div>
         <div class="col-md-8 col-md-offset-2">
-      		<h2 id="JVM体系结构"><a href="#JVM体系结构" class="headerlink" title="JVM体系结构"></a>JVM体系结构</h2><p>一、什么是JVM<br>JVM是通过模拟一个计算机来达到一个计算机所具有的的计算功能</p>
-<p>以计算为中心来看计算机的体系结构可以分为以下几个部分：<br>1.指令集，计算机所能识别的机器语言的命令集合。<br>2.计算单元，既能够识别并且控制指令执行的功能模块。<br>3.寻址方式,地址的位数，最小地址和最大地址范围，以及地址的运行规则。<br>4.寄存器定义，包括操作数寄存器，变址寄存器和操作寄存器等的定义、数量和使用方式。<br>5.存储单元，能够存储操作数和保存操作结构的单元，如内核级缓存、内存和磁盘等。</p>
-<p>汇编语言是为了让人能够更容易地记住机器指令而使用的助记符</p>
-<p>JVM和实体机的区别：<br>1.一个抽象规范，这个规范约束了JVM到底是什么，它有哪些组成部分，这些抽象规范在The Java Virtual Machine Specification 中有详细描述（注：之后有机会可以读一下这本书）。<br>2.一个具体的实现，具体实现是指不同厂商根据这个抽象规范用软件或软硬件结合的方式在相同或者不同的的平台上的具体的实现。<br>3.一个运行中的实例，当使用JVM运行一个Java程序时，它就是一个运行中的实例，每个运行中的Java程序都是一个JVM实例。</p>
-<p>JVM和实体机一样也必须有一套合适的指令集，这个指令集能够被JVM解析执行。这个指令集我们称为JVM字节码指令集，符合class文件的字节码都可以被JVM执行。</p>
-<p>二、JVM体系结构详解<br>JVM组成部分：<br>1.指令集<br>2.类加载器，在程序启动或运行时将需要的class加载到JVM中。<br>3.执行引擎，负责执行class中包含的字节码指令，相当于实际机器的CPU。<br>4.内存区，将内存划分为若干个区以模拟实际机器上的存储，记录和调度功能模块。如实际机器上的各种功能的寄存器或者PC指针记录器等。<br>5.本地方法调用，调用C或者C++实现的本地方法的代码返回结果。</p>
-<h2 id="JVM的执行引擎是如何工作"><a href="#JVM的执行引擎是如何工作" class="headerlink" title="JVM的执行引擎是如何工作"></a>JVM的执行引擎是如何工作</h2><p>通常一个程序的编写到执行会经过以下的几个阶段：<br>源代码(source code)-&gt;预处理器(preprocesser)-&gt;编译器(compiler)-&gt;汇编程序(assembler)-&gt;目标代码(object code)-&gt;链接器(Linker)-&gt;可执行程序(executables)<br>除了源码和最后的可执行程序，中间的所有环节都是由现代意义上的编译器统一完成的。</p>
-<p>不管是何种指令集，都只有几种最基本的元素：加、减、乘、除、求余，求模等。这些运算又可以进一步分解成二进制运算符：与、或、异或等。这些运算又通过指令来完成，而指令的核心目的就是确定需要运算的种类（操作码）和需要运算的数据（操作数），以及从哪里（寄存器或栈）获取操作数，将运算结果存放到什么地方（寄存区或栈）等。这种不同的操作方式又将指令划分为：一地址指令、二地址指令、三地址指令和零地址指令等n地址指令。响应的指令集会有对应的架构实现，如基于寄存器的架构实现或者基于栈的架构实现（这里的基于寄存器或栈都是在一个指令中的操作数是如何存取的）</p>
-<p>JVM为何选择基于栈的架构？<br>JVM执行字节码指令是基于栈的架构，也就是所有的操作数必须先入栈，然后根据指令中的操作码选择从栈顶弹出若干元素进行计算后再将结果压入栈中。在JVM中操作数可以存放在每一个栈桢中的一个本地变量集中，即在每个方法调用时会给这个方法分配一个本地变量集，这个本地变量集在编译时就已经确定，所以操作数入栈可以直接是常量入栈或者从本地变量集中取一个变量压入栈中。这和一般的基于寄存器的操作不同，一个操作需要频繁的入栈出栈。如两个数相加，先将两个操作数从本地变量入栈（2次入栈），然后出栈进行进行加法运算（2次出栈），再将结果压入栈顶（1次入栈），共需要5次栈操作。而寄存器的话，一般只需要将两个操作数存入寄存器进行加法运算后将结果存入其中一个寄存器即可，不需要这么多数据移动操作。那为什么JVM还要基于栈来设计呢？</p>
-<p>JVM基于栈设计有如下几个理由：<br>1.JVM要设计成与平台无关，而平台无关性就是要保证在没有或有很少寄存器的机器上也能正确执行java代码。如在80x86的机器上寄存器就是没有规律的，很难针对某一款机器设计通用的基于寄存器的指令，所以基于寄存器的架构很难做到通用。<br>2.为了指令的紧凑型，因为java字节码可能在网络上传输，所以class文件的大小也是设计JVM字节码指令的一个重要因素，如在class文件中字节码除了处理两个表跳转的指令外，其他都是字节对齐的，操作码可以只占一个字节大小，这都是为了让编译后的字节码更加紧凑。为了提高字节码在网络上的传输效率，在编译阶段，JVM可以将多个class文件中重复的常量池信息进行合并，这样多个class文件中的常量就可以共用，从而起到减少数据量的作用。</p>
-<p>执行引擎的架构设计：<br>了解了JVM以栈为架构的原因后，再看一下JVM是如何设计Java的执行部件的。</p>
-<div style="text-align: center">
-<img src="https://tva3.sinaimg.cn/large/007DFXDhgy1g5rc5u9h5kj30v20ms15n.jpg" height="300px">
-</div>
-每当创建一个新的线程时，JVM会为这个线程创建一个java栈，同时为这个线程分配一个pc寄存器，并且这个pc寄存器会指向这个线程的第一行可执行代码。每当调用一个新方法时会在这个栈上创建一个新的栈桢数据结构，这个栈桢会保留这个方法的一些数据元信息，如在这个方法中定义的局部变量，一些用来支持常量池的解析，正常方法返回及异常处理机制等。
+      		<p>在日前开发过程中，有很多地方运用到了google的<font color="#d89694">guava工具类</font>。在开发过程中省去了很多时间，所以安利一下。guava工程包含了google的java项目广泛依赖的核心库。如集合(collections),缓存(caching),字符串处理（string processing）,I/O等。下面我将列举几种常用的工具类。</p>
+<h3 id="字符串处理"><a href="#字符串处理" class="headerlink" title="字符串处理"></a>字符串处理</h3><ul>
+<li><p>Joiner连接器：Joiner 提供了各种方法来处理字符串加入操作，对象等,让字符串的连接变的简单。<font color="#d89694">注意：joiner实例是不可变的</font></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestJoiner</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span>  <span class="keyword">final</span> List&lt;String&gt; listWithNull = Arrays.asList(<span class="string">"赵二"</span>, <span class="string">"钟三"</span>, <span class="string">"吕四"</span>,<span class="keyword">null</span>);</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    	<span class="comment">//跳过null使用-拼接</span></span><br><span class="line">    	String join1 = Joiner.on(<span class="string">"-"</span>).skipNulls().join(listWithNull);<span class="comment">//结果：赵二-钟三-吕四</span></span><br><span class="line"></span><br><span class="line">    	<span class="comment">//null使用 ‘默认值’ 代替使用-拼接</span></span><br><span class="line">    	String join2 = Joiner.on(<span class="string">"-"</span>).useForNull(<span class="string">"默认值"</span>).join(listWithNull);<span class="comment">//结果：赵二-钟三-吕四-默认值</span></span><br><span class="line">    	</span><br><span class="line">    	<span class="comment">//跳过null使用-拼接再追加到strBuild后面</span></span><br><span class="line">    	StringBuilder strBuild = <span class="keyword">new</span> StringBuilder(<span class="string">"张公"</span>);</span><br><span class="line">    	StringBuilder append = Joiner.on(<span class="string">"-"</span>).skipNulls().appendTo(strBuild, listWithNull);<span class="comment">//结果：张公赵二-钟三-吕四</span></span><br><span class="line"></span><br><span class="line">    	<span class="comment">//将map转换为string</span></span><br><span class="line">    	Map&lt;String,String&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">    	map.put(<span class="string">"name"</span>, <span class="string">"carl"</span>);</span><br><span class="line">    	String mapToString = Joiner.on(<span class="string">";"</span>).withKeyValueSeparator(<span class="string">"="</span>).join(map);<span class="comment">//结果：name=carl</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//在java8 中测试joining</span></span><br><span class="line">    	String collect = listWithNull</span><br><span class="line">    			.stream().filter(s -&gt; s != <span class="keyword">null</span> &amp;&amp; !s.isEmpty()).collect(Collectors.joining(<span class="string">":"</span>));<span class="comment">//结果：赵二:钟三:吕四</span></span><br><span class="line">    &#125;	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Spliter拆分器：Splitter 提供了各种方法来处理分割操作字符串，对象等。<font color="#d89694">注意：splitter实例总是不可变的</font></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestSpliter</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">            <span class="comment">//去空格，过滤空</span></span><br><span class="line">            List&lt;String&gt; list = Splitter.on(<span class="string">"!"</span>).trimResults().omitEmptyStrings().splitToList(<span class="string">"你好 ! 陌生人!  !!!!!"</span>);</span><br><span class="line">            System.out.println(list);<span class="comment">//[你好, 陌生人]</span></span><br><span class="line">            </span><br><span class="line">            <span class="comment">//分割限制</span></span><br><span class="line">            List&lt;String&gt; listLimit = Splitter.on(<span class="string">"-"</span>).limit(<span class="number">3</span>).splitToList(<span class="string">"A-B-C-D-E"</span>);</span><br><span class="line">            System.out.println(listLimit); <span class="comment">//[A, B, C-D-E]</span></span><br><span class="line">            </span><br><span class="line">            <span class="comment">//按长度分割</span></span><br><span class="line">            List&lt;String&gt; listLength = Splitter.fixedLength(<span class="number">3</span>).splitToList(<span class="string">"aaabbbccccddd"</span>);</span><br><span class="line">            System.out.println(listLength);  <span class="comment">//[aaa, bbb, ccc, cdd, d]</span></span><br><span class="line">            </span><br><span class="line">            <span class="comment">//分割字符串并存储为map</span></span><br><span class="line">            Map&lt;String, String&gt; map = Splitter.on(<span class="string">","</span>).trimResults().omitEmptyStrings().withKeyValueSeparator(<span class="string">":"</span>).split(<span class="string">"A:01,B:05"</span>);</span><br><span class="line">            System.out.println(map);<span class="comment">//&#123;A=01, B=05&#125;  </span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Strings工具类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestStrings</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		<span class="comment">//如果为空或null，则返回null，如果不为空或null，则返回当前值</span></span><br><span class="line">		System.out.println(Strings.emptyToNull(<span class="string">""</span>));<span class="comment">//null</span></span><br><span class="line">		System.out.println(Strings.emptyToNull(<span class="keyword">null</span>));<span class="comment">//null</span></span><br><span class="line">		System.out.println(Strings.emptyToNull(<span class="string">" "</span>));<span class="comment">//' '返回空格</span></span><br><span class="line">		System.out.println(<span class="string">"strings"</span>);<span class="comment">//strings</span></span><br><span class="line">		</span><br><span class="line">		<span class="comment">//空值判断</span></span><br><span class="line">		System.out.println(Strings.isNullOrEmpty(<span class="string">""</span>));<span class="comment">//true</span></span><br><span class="line">		System.out.println(Strings.isNullOrEmpty(<span class="string">" "</span>));<span class="comment">//false</span></span><br><span class="line">		System.out.println(Strings.isNullOrEmpty(<span class="keyword">null</span>));<span class="comment">//true</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>JVM在调用某些指令时可能需要使用到常量池中的一些常量，或者是获取常量代表的数据或者这个数据指向实例化对象。而这些信息都存储在所有线程共享的方法区和java堆中。</p>
-
+</li>
+</ul>
+<!-- ### Optional类
+### 集合工具类 -->
+<!-- http://www.ibloger.net/article/3294.html -->
             <div class="clearfix"></div>
             <hr class="nogutter">
         </div>
         <nav class="m-pagination col-md-8 col-md-offset-2 col-sm-24" role="pagination">
     
-    <a class="pull-left" href="/2019/08/08/google-Guava工具包/" style="float: left;">
-        ← google Guava工具包
-    </a>
     
+    <a class="pull-right" href="/2019/07/29/JVM体系结构/">
+        JVM体系结构 →
+    </a>
     
 </nav>
 
