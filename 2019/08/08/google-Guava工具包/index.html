@@ -81,7 +81,7 @@
                     
                         <li><a href="/" target="_BLANK" class="animsition-link">work</a></li>
                     
-                        <li><a href="/" target="_BLANK" class="animsition-link">life</a></li>
+                        <li><a href="/life" target="_BLANK" class="animsition-link">life</a></li>
                     
                 </ul>
             </li>
@@ -184,9 +184,18 @@
 
 </li>
 </ul>
-<!-- ### Optional类
-### 集合工具类 -->
-<!-- http://www.ibloger.net/article/3294.html -->
+<h3 id="集合工具类"><a href="#集合工具类" class="headerlink" title="集合工具类"></a>集合工具类</h3><ul>
+<li><p>Maps工具类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestMaps</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">		<span class="comment">//构造HashMap</span></span><br><span class="line">		Map&lt;String,String&gt; map1 = Maps.newHashMap();</span><br><span class="line">		map1.put(<span class="string">"aa"</span>,<span class="string">"bb"</span>);</span><br><span class="line">		<span class="comment">//构造HashMap</span></span><br><span class="line">		Map&lt;String,String&gt; map2 = Maps.newHashMap(map1);</span><br><span class="line">		<span class="comment">//构造一个期望长度的HashMap</span></span><br><span class="line">		Map&lt;Integer, Integer&gt; map2 = Maps.newHashMapWithExpectedSize(<span class="number">3</span>);</span><br><span class="line">		<span class="comment">//构造LinkedMap</span></span><br><span class="line">		Map&lt;String,String&gt; map3 = Maps.newLinkedMap();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Lists工具类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestMaps</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">		<span class="comment">//构造ArrayList</span></span><br><span class="line">		List&lt;String&gt; list1 = Lists.newArrayList();</span><br><span class="line">		list1.add(<span class="string">"aa"</span>);</span><br><span class="line">		<span class="comment">//多参数</span></span><br><span class="line">		List&lt;String&gt; list2 = Lists.newArrayList(<span class="string">"1"</span>,<span class="string">"2"</span>,<span class="string">"3"</span>);</span><br><span class="line">		<span class="comment">//传入数组</span></span><br><span class="line">		List&lt;String&gt; list3 = Lists.newArrayList(<span class="keyword">new</span> String[]&#123;<span class="string">"123"</span>,<span class="string">"456"</span>&#125;);</span><br><span class="line">		<span class="comment">//传入集合</span></span><br><span class="line">		List&lt;String&gt; list4 = Lists.newArrayList(list1);</span><br><span class="line">		<span class="comment">//这个容器超过10个还是会自动扩容的。不用担心容量不够用。默认是分配一个容量为10的数组，不够将扩容</span></span><br><span class="line">		List&lt;String&gt; list = Lists.newArrayListWithExpectedSize(<span class="number">10</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="Cache缓存工具类"><a href="#Cache缓存工具类" class="headerlink" title="Cache缓存工具类"></a>Cache缓存工具类</h3><p>Guava 通过接口 LoadingCache 提供了一个非常强大的基于内存的 LoadingCache&lt;K，V&gt;。在缓存中自动加载值，它提供了许多实用的方法，在有缓存需求时非常有用。<br>Guava Cache 与 <code>ConcurrentMap</code> 很相似，但也不完全一样。最基本的区别是 ConcurrentMap 会一直保存所有添加的元素，直到显式地移除。相对地，Guava Cache为了限制内存占用，通常都设定为自动回收元素。在某些场景下，尽管 LoadingCache 不回收元素，它也是很有用的，因为它会自动加载缓存。<br>通常来说，Guava Cache适用于：<br>    你愿意消耗一些内存空间来提升速度。<br>    某些键会被频繁的查询。<br>    缓存中存放的数据总量不会超出内存容量。（Guava Cache是单个应用运行时的本地缓存。它不把数据存放到文件或外部服务器。）<br>如果你的场景符合上述的每一条，Guava Cache就适合你。</p>
+<p>更多内容请访问<a href="https://www.kancloud.cn/wizardforcel/java-opensource-doc/112614" target="_blank" rel="noopener">Guava官方教程（中文版）</a></p>
+
             <div class="clearfix"></div>
             <hr class="nogutter">
         </div>
