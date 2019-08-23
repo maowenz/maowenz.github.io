@@ -17,7 +17,7 @@
 <!--<![endif]-->
 
 <head>
-  <title>Archives | Maowenz&#39;s Blog</title>
+  <title>cron表达式详解 | Maowenz&#39;s Blog</title>
   <!-- Meta data -->
     <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -59,7 +59,7 @@
 </head>
 
 <!--
-<body class="home-template">
+<body class="post-template">
 -->
 <body id="index" class="lightnav animsition">
 
@@ -156,96 +156,111 @@
         <!-- ============================ Header & Logo bar =========================== -->
 
 
-      <!-- ============================ Hero Image =========================== -->
-
-<section id="hero" class="scrollme">
-    <div class="container-fluid element-img" style="background: url(/img/hero.jpg) no-repeat center center fixed;background-size: cover">
-        <div class="row">
-            <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 vertical-align cover boost text-center">
-                <div class="center-me animateme" data-when="exit" data-from="0" data-to="0.6" data-opacity="0" data-translatey="100">
-                    <div>
-                        
-                        <h2>Today， give a stranger one of your smiles!</h2>
-                        <p></p>
-                        
-                        <h2></h2>
-                        <p>I am a slow walker，but I never walk backwards。</p>
-                        
-
-                    </div>
-                </div>
-            </div>
-            <!-- // .col-md-12 -->
-        </div>
-        <div class="herofade beige-dk"></div>
-    </div>
-</section>
-
-<!-- Height spacing helper -->
-<div class="heightblock"></div>
-<!-- // End height spacing helper -->
-
-<!-- ============================ END Hero Image =========================== -->
-
-
-
-
-<section id="services">
+      
+<section id="intro">
     <div class="container">
-        <div class="row">
-            <div class="col-md-10 col-md-offset-1">
-                <div class="row boxes">
-                    
-                    
-                        
-                        
-                        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 wow fadeInUp" data-wow-delay="0.3s">
-                            
-                              <h4 class="title"><a href="/2019/08/23/cron表达式详解/">cron表达式详解</a></h4>
-                            
-                            <p><time datetime="2019-08-23T07:54:51.000Z"><a href="/2019/08/23/cron表达式详解/">2019-08-23</a></time></p>
-                        </div>
-                    
-                        
-                        
-                        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 wow fadeInUp" data-wow-delay="0.3s">
-                            
-                              <h4 class="title"><a href="/2019/08/17/redis使用/">redis使用</a></h4>
-                            
-                            <p><time datetime="2019-08-17T03:20:16.000Z"><a href="/2019/08/17/redis使用/">2019-08-17</a></time></p>
-                        </div>
-                    
-                        
-                        
-                        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 wow fadeInUp" data-wow-delay="0.3s">
-                            
-                              <h4 class="title"><a href="/2019/08/08/google-Guava工具包/">google Guava工具包</a></h4>
-                            
-                            <p><time datetime="2019-08-08T02:51:29.000Z"><a href="/2019/08/08/google-Guava工具包/">2019-08-08</a></time></p>
-                        </div>
-                    
-                        
-                        
-                        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 wow fadeInUp" data-wow-delay="0.3s">
-                            
-                              <h4 class="title"><a href="/2019/07/29/JVM体系结构/">JVM体系结构</a></h4>
-                            
-                            <p><time datetime="2019-07-29T06:58:45.000Z"><a href="/2019/07/29/JVM体系结构/">2019-07-29</a></time></p>
-                        </div>
-                    
-                </div>
-            </div>    
+        <div class="row col-md-offset-2">
+            <div class="col-md-8">
+    			<span class="post-meta">
+      <time datetime="2019-08-23T07:54:51.000Z" itemprop="datePublished">
+          2019-08-23
+      </time>
+    
+</span>
+                <h1>cron表达式详解</h1>
+            </div>
         </div>
-    </div>
-</section> 
+        <div class="col-md-8 col-md-offset-2">
+      		<h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>在最近项目开发中，需要写一些定时任务。用到了cron表达式，之前在linux上也跑过一个python脚本，也用到了cron表达式。一直没搞明白cron表达式的用法和含义，这篇博客就来介绍一下cron的用法。</p>
+<h2 id="cron表达式详解"><a href="#cron表达式详解" class="headerlink" title="cron表达式详解"></a>cron表达式详解</h2><p><code>cron</code>表达式是一个字符串，分为6或7个域。每一个域代表一个含义。每个域之间用空格分隔。cron有以下两种语法格式：<br>6个域：Seconds Minutes Hours DayofMonth Month DayofWeek<br>7个域：Seconds Minutes Hours DayofMonth Month DayofWeek Year</p>
+<h3 id="每一个域可出现的字符串如下："><a href="#每一个域可出现的字符串如下：" class="headerlink" title="每一个域可出现的字符串如下："></a>每一个域可出现的字符串如下：</h3><ol>
+<li>Seconds：可使用<font color="#d89694"> , - * / </font>四个字符，有效范围为0~59的整数</li>
+<li>Minutes：可使用<font color="#d89694"> , - * / </font>四个字符，有效范围为0~59的整数</li>
+<li>Hours：可使用<font color="#d89694"> , - * / </font>四个字符，有效范围为0~23的整数</li>
+<li>DayofMonth：可使用<font color="#d89694"> , - * / ? L C W </font>八个字符，有效范围为0~31的整数</li>
+<li>Month：可使用<font color="#d89694"> , - * / </font>四个字符，有效范围为1~12的整数或JAN-DEC</li>
+<li>DayofWeek：可使用<font color="#d89694"> , - * / ? L C # </font>八个字符，有效范围为1~7的整数或SUN-SAT</li>
+<li>Year：可使用<font color="#d89694"> , - * / </font>四个字符，有效范围为1970~2099或者是’empty’</li>
+</ol>
+<h3 id="通配符详解："><a href="#通配符详解：" class="headerlink" title="通配符详解："></a>通配符详解：</h3><ol>
+<li><font color="#d89694"> * </font>:表示该域所有可能的值。如在Hours域使用’*’，则表示每小时都会触发事件。</li>
+<li><font color="#d89694"> - </font>:表示该域出现的值得范围。如在Seconds域使用’10-30’，则表示从10秒到30秒每秒执行一次。</li>
+<li><font color="#d89694"> / </font>:表示该域出现的值得增量。如在Seconds域使用```0/20’，则表示从第0秒开始，每20秒执行一次。</li>
+<li><font color="#d89694"> , </font>:表示该域出现的枚举值。如在Seconds域使用’5,20’,则表示在第5秒和第20秒各执行一次。</li>
+<li><font color="#d89694"> ? </font>:只能用在DayofMonth和DayofWeek两个域。且两个域不能同时出现’?’</li>
+<li><font color="#d89694"> L </font>:该字符只在日期和星期字段中使用,代表’last’的意思，表示该月份的最后一天或者表示该星期的星期六。</li>
+<li><font color="#d89694"> W </font>:该字符只能出现在日期字段里，表示离该日期最近的工作日。如’15W’,表示离该月15号最近的工作日。</li>
+<li><font color="#d89694"> C </font>:该字符只在日期和星期字段中使用，代表“Calendar”的意思。</li>
+<li><font color="#d89694"> # </font>:该字符只能在星期字段中使用，表示当月某个工作日。如6#3表示当月的第三个星期五，4#5表示当月的第五个星期三。</li>
+</ol>
+<h3 id="举例："><a href="#举例：" class="headerlink" title="举例："></a>举例：</h3><p>“<font color="#d89694"> 0 0 0/2 * * ? </font>“ 每隔2个小时触发<br>“<font color="#d89694"> 0 0 12 * * ? </font>“ 每天中午12点触发<br>“<font color="#d89694"> 0 15 10 ? * * </font>“ 每天上午10:15触发<br>“<font color="#d89694"> 0 15 10 * * ? </font>“ 每天上午10:15触发<br>“<font color="#d89694"> 0 15 10 * * ? * </font>“ 每天上午10:15触发<br>“<font color="#d89694"> 0 15 10 * * ? 2005 </font>“ 2005年的每天上午10:15触发<br>“<font color="#d89694"> 0 * 14 * * ? </font>“ 在每天下午2点到下午2:59期间的每1分钟触发<br>“<font color="#d89694"> 0 0/5 14 * * ? </font>“ 在每天下午2点到下午2:55期间的每5分钟触发<br>“<font color="#d89694"> 0 0/5 14,18 * * ? </font>“ 在每天下午2点到2:55期间和下午6点到6:55期间的每5分钟触发<br>“<font color="#d89694"> 0 0-5 14 * * ? </font>“ 在每天下午2点到下午2:05期间的每1分钟触发<br>“<font color="#d89694"> 0 10,44 14 ? 3 WED </font>“ 每年三月的星期三的下午2:10和2:44触发<br>“<font color="#d89694"> 0 15 10 ? * MON-FRI </font>“ 周一至周五的上午10:15触发<br>“<font color="#d89694"> 0 15 10 15 * ? </font>“ 每月15日上午10:15触发<br>“<font color="#d89694"> 0 15 10 L * ? </font>“ 每月最后一日的上午10:15触发<br>“<font color="#d89694"> 0 15 10 ? * 6L </font>“ 每月的最后一个星期五上午10:15触发<br>“<font color="#d89694"> 0 15 10 ? * 6L 2002-2005 </font>“ 2002年至2005年的每月的最后一个星期五上午10:15触发<br>“<font color="#d89694"> 0 15 10 ? * 6#3 </font>“ 每月的第三个星期五上午10:15触发</p>
 
-<section id="statement">
-    <div class="container text-center wow fadeInUp" data-wow-delay="0.5s">
-        <div class="row">
-            <p>When there’s no expectation， losing won’t bring hurt， gaining makes you surprised!</p>
+            <div class="clearfix"></div>
+            <hr class="nogutter">
         </div>
+        <nav class="m-pagination col-md-8 col-md-offset-2 col-sm-24" role="pagination">
+    
+    
+    <a class="pull-right" href="/2019/08/17/redis使用/">
+        redis使用 →
+    </a>
+    
+</nav>
+
+        <div class="col-md-8 col-md-offset-2 col-sm-24"><script type="text/javascript">
+  /**
+   * 搜狐畅言
+   */
+
+  /*
+  document.write('<div id="SOHUCS" sid="' + window.location.pathname.slice(1) + '" ></div>');
+
+  window.onload = function () {
+    (function () {
+      var appid = 'cytXXXX';
+      var conf = 'prod_xxxxxxxxxxxxxxxxx';
+      var width = window.innerWidth || document.documentElement.clientWidth;
+      var loadJs = function (d, a, id) {
+        var c = document.getElementsByTagName("head")[0] || document.head || document.documentElement;
+        var b = document.createElement("script");
+        b.setAttribute("type", "text/javascript");
+        b.setAttribute("charset", "UTF-8");
+        b.setAttribute("src", d);
+        if (id) {
+          b.setAttribute("id", id);
+        }
+        if (typeof a === "function") {
+          if (window.attachEvent) {
+            b.onreadystatechange = function () {
+              var e = b.readyState;
+              if (e === "loaded" || e === "complete") {
+                b.onreadystatechange = null;
+                a()
+              }
+            }
+          } else {
+            b.onload = a
+          }
+        }
+        c.appendChild(b)
+      };
+
+      loadJs("https://changyan.sohu.com/upload/changyan.js", function () {
+        window.changyan.api.config({
+          appid: appid,
+          conf: conf
+        })
+      });
+    })();
+  }
+  */
+
+</script>
+</div>
     </div>
 </section>
+
+
       
 <!-- ============================ Footer =========================== -->
 
