@@ -194,6 +194,37 @@
         <div class="row">
             <div class="col-md-8 col-md-offset-2 opening-statement">
                 <div class="col-md-4">
+                    <h3><a href="/2019/09/04/内存泄漏及解决/">内存泄漏及解决</a></h3>
+                    <span>
+                        <span class="post-meta">
+      <time datetime="2019-09-04T09:36:12.000Z" itemprop="datePublished">
+          2019-09-04
+      </time>
+    
+</span>
+                    </span>
+                </div>
+                <div class="col-md-8">
+                    <p>
+                      
+                        问题出现在最近的开发过程中，出现了一个很严重的bug，内存泄漏。敲代码的历程中第一次遇到这种大bug，心痛。但是没办法呀，还是得找着出现问题的地方并解决问题呀。在遇到问题之后，像是了解了一下什么因素会造成内存泄漏。导致内存泄漏主要的原因是，先前申请了内存空间而忘记了释放。有了这个大的前提，那就慢慢分析问题呗。
+问题的解决过程：1.首先想到的是一些流可能未关闭。然后排查了一通，在项目中使用的流基本都是用try-with-resources
+                      
+                    </p>
+                    
+                    <p class="pull-right readMore">
+                        <a href="/2019/09/04/内存泄漏及解决/">Read More...</a>
+                    </p>
+                    
+                </div>
+                <div class="clearfix"></div>
+                <hr class="nogutter">
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2 opening-statement">
+                <div class="col-md-4">
                     <h3><a href="/2019/08/23/cron表达式详解/">cron表达式详解</a></h3>
                     <span>
                         <span class="post-meta">
